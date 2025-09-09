@@ -9,14 +9,14 @@
     <children>
         <HBox spacing="5">
             <children>
-                <Label text="OptionsDepth URL:" />
-                <TextField fx:id="optionsUrlField" prefWidth="400" text="http://localhost:8080/options" />
+                <Label text="Consulta:" />
+                <TextField fx:id="consultaField" prefWidth="400" />
             </children>
         </HBox>
         <HBox spacing="5">
             <children>
-                <Label text="Gexbot URL:" />
-                <TextField fx:id="gexbotUrlField" prefWidth="400" text="http://localhost:8080/gexbot" />
+                <Label text="Option ID:" />
+                <TextField fx:id="optionIdField" prefWidth="400" />
             </children>
         </HBox>
         <Button fx:id="runButton" text="Ejecutar análisis" onAction="#onRun" />

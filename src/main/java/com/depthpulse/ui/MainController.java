@@ -1,22 +1,23 @@
 package com.depthpulse.ui;
 
-import com.depthpulse.http.AnalysisClient;
-import com.depthpulse.model.AnalysisResponse;
+import com.depthpulse.dto.AnalysisPayload;
+import com.depthpulse.service.AnalysisService;
+import java.util.concurrent.CompletableFuture;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.util.concurrent.CompletableFuture;
+import org.springframework.stereotype.Component;
 
 /**
  * Controller for the main UI.
  */
+@Component
 public class MainController {
 
     @FXML
-    private TextField optionsUrlField;
+    private TextField consultaField;
     @FXML
-    private TextField gexbotUrlField;
+    private TextField optionIdField;
     @FXML
     private Button runButton;
     @FXML
@@ -26,7 +27,11 @@ public class MainController {
     @FXML
     private TextArea outputArea;
 
-    private final AnalysisClient client = new AnalysisClient();
+    private final AnalysisService analysisService;
+
+    public MainController(AnalysisService analysisService) {
+        this.analysisService = analysisService;
+    }
 
     @FXML
     private void initialize() {
@@ -36,28 +41,26 @@ public class MainController {
 
     @FXML
     private void onRun() {
-        String optionsUrl = optionsUrlField.getText().trim();
-        String gexbotUrl = gexbotUrlField.getText().trim();
-        if (optionsUrl.isEmpty() || gexbotUrl.isEmpty()) {
-            statusLabel.setText("URL no válida");
+        String consulta = consultaField.getText().trim();
+        String optionId = optionIdField.getText().trim();
+        if (consulta.isEmpty() || optionId.isEmpty()) {
+            statusLabel.setText("Datos no válidos");
             return;
         }
         progressIndicator.setVisible(true);
         statusLabel.setText("Cargando...");
         outputArea.clear();
 
-        CompletableFuture<AnalysisResponse> future = client.runAnalysis(optionsUrl, gexbotUrl);
-        future.whenComplete((resp, ex) -> {
-            Platform.runLater(() -> {
-                progressIndicator.setVisible(false);
-                if (ex != null) {
-                    statusLabel.setText("Error: " + ex.getCause().getMessage());
-                    outputArea.setText("");
-                } else {
-                    statusLabel.setText("Completado");
-                    outputArea.setText(resp.body());
-                }
-            });
-        });
+        CompletableFuture
+                .supplyAsync(() -> analysisService.fetchBoth(consulta, optionId))
+                .whenComplete((payload, ex) -> Platform.runLater(() -> {
+                    progressIndicator.setVisible(false);
+                    if (ex != null) {
+                        statusLabel.setText("Error: " + ex.getCause().getMessage());
+                    } else {
+                        statusLabel.setText("Completado");
+                        outputArea.setText("GetBox: " + payload.getboxJson() + "\nOptionDepth: " + payload.optionDepthJson());
+                    }
+                }));
     }
 }

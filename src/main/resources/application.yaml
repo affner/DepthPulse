@@ -1,3 +1,10 @@
+getbox:
+  base-url: https://<GETBOX_BASE>
+  api-key: ${GETBOX_API_KEY}
+optiondepth:
+  base-url: https://<OPTION_DEPTH_BASE>
+  api-key: ${OPTION_DEPTH_API_KEY}
+
 spring:
   datasource:
     url: jdbc:sqlite:./depthpulse.db       # crea un archivo en la raíz del proyecto
