@@ -14,7 +14,9 @@ import java.util.concurrent.CompletableFuture;
 public class MainController {
 
     @FXML
-    private TextField backendUrlField;
+    private TextField optionsUrlField;
+    @FXML
+    private TextField gexbotUrlField;
     @FXML
     private Button runButton;
     @FXML
@@ -34,8 +36,9 @@ public class MainController {
 
     @FXML
     private void onRun() {
-        String url = backendUrlField.getText().trim();
-        if (url.isEmpty()) {
+        String optionsUrl = optionsUrlField.getText().trim();
+        String gexbotUrl = gexbotUrlField.getText().trim();
+        if (optionsUrl.isEmpty() || gexbotUrl.isEmpty()) {
             statusLabel.setText("URL no válida");
             return;
         }
@@ -43,7 +46,7 @@ public class MainController {
         statusLabel.setText("Cargando...");
         outputArea.clear();
 
-        CompletableFuture<AnalysisResponse> future = client.runAnalysis(url);
+        CompletableFuture<AnalysisResponse> future = client.runAnalysis(optionsUrl, gexbotUrl);
         future.whenComplete((resp, ex) -> {
             Platform.runLater(() -> {
                 progressIndicator.setVisible(false);
