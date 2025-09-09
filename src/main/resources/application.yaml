@@ -1,9 +1,10 @@
 getbox:
-  base-url: https://<GETBOX_BASE>
-  api-key: ${GETBOX_API_KEY}
+  base-url: https://httpbin.org
+  api-key: demo-getbox-key
+
 optiondepth:
-  base-url: https://<OPTION_DEPTH_BASE>
-  api-key: ${OPTION_DEPTH_API_KEY}
+  base-url: https://httpbin.org
+  api-key: demo-optiondepth-key
 
 spring:
   datasource:
@@ -12,7 +13,7 @@ spring:
   jpa:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
     hibernate:
-      ddl-auto: update                     # crea tablas si no existen
+      ddl-auto: create                     # crea tablas si no existen
   sql:
     initialization:
       mode: never                          # evita que Boot busque schema.sql
