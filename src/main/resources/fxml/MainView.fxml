@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml" spacing="10" padding="10" fx:controller="com.depthpulse.ui.MainController">
+    <children>
+        <HBox spacing="5">
+            <children>
+                <Label text="Backend URL:" />
+                <TextField fx:id="backendUrlField" prefWidth="400" text="http://localhost:8080/analysis" />
+                <Button text="Ejecutar análisis" onAction="#onRun" />
+            </children>
+        </HBox>
+        <HBox spacing="5" alignment="CENTER_LEFT">
+            <children>
+                <ProgressIndicator fx:id="progressIndicator" visible="false" prefWidth="25" prefHeight="25" />
+                <Label fx:id="statusLabel" text="Listo" />
+            </children>
+        </HBox>
+        <TextArea fx:id="outputArea" prefRowCount="15" wrapText="true" />
+    </children>
+</VBox>
