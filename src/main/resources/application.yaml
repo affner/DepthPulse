@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:./depthpulse.db       # crea un archivo en la raíz del proyecto
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update                     # crea tablas si no existen
+  sql:
+    initialization:
+      mode: never                          # evita que Boot busque schema.sql
