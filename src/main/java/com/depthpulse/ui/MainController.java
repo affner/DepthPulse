@@ -6,6 +6,8 @@ import java.util.concurrent.CompletableFuture;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MainController {
+
+    private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
     @FXML
     private TextField consultaField;
@@ -43,6 +47,7 @@ public class MainController {
     private void onRun() {
         String consulta = consultaField.getText().trim();
         String optionId = optionIdField.getText().trim();
+        log.info("Run triggered with consulta={} optionId={}", consulta, optionId);
         if (consulta.isEmpty() || optionId.isEmpty()) {
             statusLabel.setText("Datos no válidos");
             return;
@@ -56,8 +61,10 @@ public class MainController {
                 .whenComplete((payload, ex) -> Platform.runLater(() -> {
                     progressIndicator.setVisible(false);
                     if (ex != null) {
+                        log.error("Analysis failed", ex);
                         statusLabel.setText("Error: " + ex.getCause().getMessage());
                     } else {
+                        log.debug("Analysis completed for consulta={} optionId={}", consulta, optionId);
                         statusLabel.setText("Completado");
                         outputArea.setText("GetBox: " + payload.getboxJson() + "\nOptionDepth: " + payload.optionDepthJson());
                     }
