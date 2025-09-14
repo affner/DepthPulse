@@ -71,6 +71,19 @@ public class GetBoxClient {
         }
     }
 
+    /**
+     * Retorna datos de ejemplo sin realizar llamadas de red reales.
+     * Esto nos permite demostrar el flujo completo de la aplicación
+     * en entornos donde la API remota no está disponible.
+     */
+    public TickersResponse getSampleTickers() {
+        TickersResponse resp = new TickersResponse();
+        resp.setStocks(java.util.List.of("AAPL", "MSFT"));
+        resp.setIndexes(java.util.List.of("SPX"));
+        resp.setFutures(java.util.List.of("ES"));
+        return resp;
+    }
+
     /** Consulta genérica para endpoints que devuelven JSON dinámico (gex chain, profile, etc.) */
     public JsonNode callEndpoint(String path, Map<String, String> queryParams) throws RestClientException {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl + path);
