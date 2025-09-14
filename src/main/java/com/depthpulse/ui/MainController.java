@@ -2,7 +2,6 @@ package com.depthpulse.ui;
 
 import com.depthpulse.dto.AnalysisPayload;
 import com.depthpulse.service.AnalysisService;
-import java.util.concurrent.CompletableFuture;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -29,7 +28,11 @@ public class MainController {
     @FXML
     private Label statusLabel;
     @FXML
-    private TextArea outputArea;
+    private TextArea getBoxArea;
+    @FXML
+    private TextArea optionDepthArea;
+    @FXML
+    private TextArea analysisArea;
 
     private final AnalysisService analysisService;
 
@@ -41,6 +44,9 @@ public class MainController {
     private void initialize() {
         progressIndicator.setVisible(false);
         statusLabel.setText("Listo");
+        getBoxArea.clear();
+        optionDepthArea.clear();
+        analysisArea.clear();
     }
 
     @FXML
@@ -54,19 +60,22 @@ public class MainController {
         }
         progressIndicator.setVisible(true);
         statusLabel.setText("Cargando...");
-        outputArea.clear();
+        getBoxArea.clear();
+        optionDepthArea.clear();
+        analysisArea.clear();
 
-        CompletableFuture
-                .supplyAsync(() -> analysisService.fetchBoth(consulta, optionId))
+        analysisService.fetchBoth(consulta, optionId)
                 .whenComplete((payload, ex) -> Platform.runLater(() -> {
                     progressIndicator.setVisible(false);
                     if (ex != null) {
                         log.error("Analysis failed", ex);
-                        statusLabel.setText("Error: " + ex.getCause().getMessage());
+                        statusLabel.setText("Error: " + ex.getMessage());
                     } else {
                         log.debug("Analysis completed for consulta={} optionId={}", consulta, optionId);
                         statusLabel.setText("Completado");
-                        outputArea.setText("GetBox: " + payload.getboxJson() + "\nOptionDepth: " + payload.optionDepthJson());
+                        getBoxArea.setText(payload.getboxJson());
+                        optionDepthArea.setText(payload.optionDepthJson());
+                        analysisArea.setText(payload.analysisSummary());
                     }
                 }));
     }

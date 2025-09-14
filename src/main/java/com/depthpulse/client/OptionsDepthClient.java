@@ -60,6 +60,22 @@ public class OptionsDepthClient {
                 mapper.getTypeFactory().constructCollectionType(List.class, HeatmapPoint.class));
     }
 
+    /**
+     * Minimal helper used by the demo application. Rather than invoking the
+     * real Options Depth API, we return a small JSON structure that mimics the
+     * expected payload. This keeps the example self-contained while providing
+     * data that can be combined with the GetBox results.
+     *
+     * @param optionId identifier for the option contract.
+     * @return simulated JSON response.
+     */
+    public String fetchRaw(String optionId) {
+        // In a production ready client this method would perform an HTTP call.
+        // The returned JSON includes a numeric "depth" value which will be used
+        // later by the AnalysisService.
+        return "{\"depth\": 100, \"optionId\": \"" + optionId + "\"}";
+    }
+
     public static class HeatmapPoint {
         private double price;
         private double value;

@@ -25,7 +25,10 @@ public class AnalysisController {
     public AnalysisPayload getAnalysis(@RequestParam String consulta,
                                        @RequestParam String optionId) {
         log.info("Received analysis request consulta={} optionId={}", consulta, optionId);
-        AnalysisPayload payload = service.fetchBoth(consulta, optionId);
+        // The service performs work asynchronously, but for the REST endpoint we
+        // simply block and wait for the result. The UI layer uses the same
+        // method without blocking to keep the interface responsive.
+        AnalysisPayload payload = service.fetchBoth(consulta, optionId).join();
         log.debug("Returning analysis for consulta={} optionId={}", consulta, optionId);
         return payload;
     }
