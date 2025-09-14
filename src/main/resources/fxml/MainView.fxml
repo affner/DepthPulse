@@ -26,6 +26,11 @@
                 <Label fx:id="statusLabel" text="Listo" />
             </children>
         </HBox>
-        <TextArea fx:id="outputArea" prefRowCount="15" wrapText="true" />
+        <Label text="GetBox señal:" />
+        <TextArea fx:id="getBoxArea" prefRowCount="4" wrapText="true" />
+        <Label text="OptionDepth señal:" />
+        <TextArea fx:id="optionDepthArea" prefRowCount="4" wrapText="true" />
+        <Label text="Análisis combinado:" />
+        <TextArea fx:id="analysisArea" prefRowCount="4" wrapText="true" />
     </children>
 </VBox>

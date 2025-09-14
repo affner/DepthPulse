@@ -1,6 +1,6 @@
 package com.depthpulse.ui;
 
-import com.depthpulse.dto.AnalysisPayload;
+import com.depthpulse.dto.AnalysisResult;
 import com.depthpulse.service.AnalysisService;
 import java.util.concurrent.CompletableFuture;
 import javafx.application.Platform;
@@ -29,7 +29,11 @@ public class MainController {
     @FXML
     private Label statusLabel;
     @FXML
-    private TextArea outputArea;
+    private TextArea getBoxArea;
+    @FXML
+    private TextArea optionDepthArea;
+    @FXML
+    private TextArea analysisArea;
 
     private final AnalysisService analysisService;
 
@@ -54,10 +58,12 @@ public class MainController {
         }
         progressIndicator.setVisible(true);
         statusLabel.setText("Cargando...");
-        outputArea.clear();
+        getBoxArea.clear();
+        optionDepthArea.clear();
+        analysisArea.clear();
 
         CompletableFuture
-                .supplyAsync(() -> analysisService.fetchBoth(consulta, optionId))
+                .supplyAsync(() -> analysisService.runAnalysis(consulta, optionId))
                 .whenComplete((payload, ex) -> Platform.runLater(() -> {
                     progressIndicator.setVisible(false);
                     if (ex != null) {
@@ -66,7 +72,9 @@ public class MainController {
                     } else {
                         log.debug("Analysis completed for consulta={} optionId={}", consulta, optionId);
                         statusLabel.setText("Completado");
-                        outputArea.setText("GetBox: " + payload.getboxJson() + "\nOptionDepth: " + payload.optionDepthJson());
+                        getBoxArea.setText(String.valueOf(payload.getBoxSignal()));
+                        optionDepthArea.setText(String.valueOf(payload.optionDepthSignal()));
+                        analysisArea.setText(payload.conclusion());
                     }
                 }));
     }
