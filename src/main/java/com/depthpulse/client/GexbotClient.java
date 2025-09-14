@@ -59,5 +59,15 @@ public class GexbotClient {
         String json = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, req, String.class).getBody();
         return mapper.readTree(json);
     }
+
+    /**
+     * Temporary helper that simulates a simple response from the GetBox API.
+     * Provides deterministic data for development without contacting the
+     * remote service.
+     */
+    public String fetchRaw(String consulta) {
+        // A real implementation would issue an HTTP request using 'consulta'.
+        return String.format("{\"consulta\":\"%s\",\"score\":42}", consulta);
+    }
 }
 

@@ -11,7 +11,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OptionsDepthClient {
@@ -58,6 +57,17 @@ public class OptionsDepthClient {
         // El endpoint devuelve un array de objetos
         return mapper.readValue(responseBody,
                 mapper.getTypeFactory().constructCollectionType(List.class, HeatmapPoint.class));
+    }
+
+    /**
+     * Simulated call to the OptionDepth API returning a minimal JSON payload.
+     * This allows the rest of the application to work without performing
+     * a real HTTP request while the client is still under development.
+     */
+    public String fetchRaw(String optionId) {
+        // In a real implementation this method would perform an HTTP call
+        // using the parameters in optionId and parse the JSON response.
+        return String.format("{\"optionId\":\"%s\",\"impliedVol\":0.18}", optionId);
     }
 
     public static class HeatmapPoint {

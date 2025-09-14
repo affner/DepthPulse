@@ -29,7 +29,11 @@ public class MainController {
     @FXML
     private Label statusLabel;
     @FXML
-    private TextArea outputArea;
+    private TextArea getboxArea;
+    @FXML
+    private TextArea optionDepthArea;
+    @FXML
+    private TextArea analysisArea;
 
     private final AnalysisService analysisService;
 
@@ -41,6 +45,9 @@ public class MainController {
     private void initialize() {
         progressIndicator.setVisible(false);
         statusLabel.setText("Listo");
+        getboxArea.clear();
+        optionDepthArea.clear();
+        analysisArea.clear();
     }
 
     @FXML
@@ -54,10 +61,12 @@ public class MainController {
         }
         progressIndicator.setVisible(true);
         statusLabel.setText("Cargando...");
-        outputArea.clear();
+        getboxArea.clear();
+        optionDepthArea.clear();
+        analysisArea.clear();
 
         CompletableFuture
-                .supplyAsync(() -> analysisService.fetchBoth(consulta, optionId))
+                .supplyAsync(() -> analysisService.analyze(consulta, optionId))
                 .whenComplete((payload, ex) -> Platform.runLater(() -> {
                     progressIndicator.setVisible(false);
                     if (ex != null) {
@@ -66,7 +75,9 @@ public class MainController {
                     } else {
                         log.debug("Analysis completed for consulta={} optionId={}", consulta, optionId);
                         statusLabel.setText("Completado");
-                        outputArea.setText("GetBox: " + payload.getboxJson() + "\nOptionDepth: " + payload.optionDepthJson());
+                        getboxArea.setText(payload.getboxJson());
+                        optionDepthArea.setText(payload.optionDepthJson());
+                        analysisArea.setText(payload.analysisResult());
                     }
                 }));
     }
