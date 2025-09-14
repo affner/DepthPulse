@@ -11,7 +11,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OptionsDepthClient {
@@ -58,6 +57,24 @@ public class OptionsDepthClient {
         // El endpoint devuelve un array de objetos
         return mapper.readValue(responseBody,
                 mapper.getTypeFactory().constructCollectionType(List.class, HeatmapPoint.class));
+    }
+
+    /**
+     * Retorna un pequeño conjunto de puntos para pruebas locales. No realiza
+     * ninguna llamada de red, simplemente simula la estructura devuelta por la API.
+     */
+    public List<HeatmapPoint> getSampleHeatmap() {
+        HeatmapPoint p1 = new HeatmapPoint();
+        p1.setPrice(100);
+        p1.setValue(15);
+        p1.setEffectiveDatetime("2024-01-01T10:00:00Z");
+
+        HeatmapPoint p2 = new HeatmapPoint();
+        p2.setPrice(105);
+        p2.setValue(5);
+        p2.setEffectiveDatetime("2024-01-01T11:00:00Z");
+
+        return List.of(p1, p2);
     }
 
     public static class HeatmapPoint {

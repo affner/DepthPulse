@@ -25,7 +25,7 @@ public class AnalysisController {
     public AnalysisPayload getAnalysis(@RequestParam String consulta,
                                        @RequestParam String optionId) {
         log.info("Received analysis request consulta={} optionId={}", consulta, optionId);
-        AnalysisPayload payload = service.fetchBoth(consulta, optionId);
+        AnalysisPayload payload = service.performAnalysis(consulta, optionId);
         log.debug("Returning analysis for consulta={} optionId={}", consulta, optionId);
         return payload;
     }
