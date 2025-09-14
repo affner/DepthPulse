@@ -1,5 +1,5 @@
 getbox:
-  base-url: https://httpbin.org
+  base-url: https://api.gexbot.com
   api-key: demo-getbox-key
 
 optiondepth:
