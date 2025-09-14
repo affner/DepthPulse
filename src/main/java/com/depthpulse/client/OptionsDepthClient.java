@@ -60,6 +60,20 @@ public class OptionsDepthClient {
                 mapper.getTypeFactory().constructCollectionType(List.class, HeatmapPoint.class));
     }
 
+    /**
+     * Temporary helper that produces synthetic data so the rest of the
+     * application can be exercised without contacting the real service. The
+     * value is derived from the {@code optionId} to keep it deterministic
+     * between executions.
+     *
+     * @param optionId identifier of the option contract
+     * @return simulated metric from the options-depth API
+     */
+    public double fetchDummySignal(String optionId) {
+        // Use the hash code to obtain a pseudo value in the 0-10 range.
+        return Math.abs(optionId.hashCode() % 100) / 10.0;
+    }
+
     public static class HeatmapPoint {
         private double price;
         private double value;

@@ -1,6 +1,6 @@
 package com.depthpulse.controller;
 
-import com.depthpulse.dto.AnalysisPayload;
+import com.depthpulse.dto.AnalysisResult;
 import com.depthpulse.service.AnalysisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +22,10 @@ public class AnalysisController {
     }
 
     @GetMapping("/analysis")
-    public AnalysisPayload getAnalysis(@RequestParam String consulta,
-                                       @RequestParam String optionId) {
+    public AnalysisResult getAnalysis(@RequestParam String consulta,
+                                      @RequestParam String optionId) {
         log.info("Received analysis request consulta={} optionId={}", consulta, optionId);
-        AnalysisPayload payload = service.fetchBoth(consulta, optionId);
+        AnalysisResult payload = service.runAnalysis(consulta, optionId);
         log.debug("Returning analysis for consulta={} optionId={}", consulta, optionId);
         return payload;
     }

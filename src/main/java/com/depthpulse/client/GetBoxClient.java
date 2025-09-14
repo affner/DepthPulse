@@ -92,4 +92,23 @@ public class GetBoxClient {
             throw new IllegalStateException("No se pudo parsear la respuesta de " + path, e);
         }
     }
+
+    /**
+     * Simulated call used during early development.
+     * <p>
+     * The real client above performs HTTP requests against the GetBox API. For
+     * now we want to exercise the integration flow without hitting the network,
+     * so this method returns a deterministic numeric signal based on the
+     * provided ticker. The value is intentionally simple but allows the service
+     * layer to behave as if data had been fetched from the remote endpoint.
+     * </p>
+     *
+     * @param ticker Stock symbol to "query".
+     * @return pseudo value representing some market metric.
+     */
+    public double fetchDummySignal(String ticker) {
+        LOG.debug("Simulating GetBox signal for {}", ticker);
+        // Any deterministic transformation is fine; we just need a value.
+        return Math.abs(ticker.hashCode() % 100) / 10.0;
+    }
 }
